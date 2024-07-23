@@ -37,6 +37,9 @@ def main():
             # Paso 5: Calcular el conductor
             conductor = SeleccionDeConductor(datos_entrada, file_path,itm["interruptor"]).seleccionar_por_capacidad_conduccion(corriente_nominal)
             print(conductor)
+            
+
+
 
             
     except ValueError as e:
