@@ -1,0 +1,36 @@
+sequenceDiagram
+    participant Usuario
+    participant CalculadoraElectrica
+    participant DatosEntrada
+    participant CorrienteNominal
+    participant InterruptorTermomagnetico
+    participant Conduccion
+    participant CaidaTension
+    participant Conductor
+    participant Canalizacion
+
+    Usuario->>CalculadoraElectrica: ingresarDatos(voltaje, potencia, fp, tipoCircuito, temperatura, numeroHilos)
+    CalculadoraElectrica->>DatosEntrada: validarDatos()
+    DatosEntrada-->>CalculadoraElectrica: datos validados
+
+    CalculadoraElectrica->>CorrienteNominal: calcularCorrienteNominal(voltaje, potencia, fp, tipoCircuito, tipoCircuito)
+    CorrienteNominal-->>CalculadoraElectrica: corrienteNominal
+
+    CalculadoraElectrica->>InterruptorTermomagnetico: seleccionarInterruptor(corrienteNominal, tipoCarga)
+    InterruptorTermomagnetico-->>CalculadoraElectrica: interruptorSeleccionado
+
+    CalculadoraElectrica->>Conduccion: calcularCapacidad(corrienteNominal, temperatura, numeroHilos)
+    Conduccion-->>CalculadoraElectrica: capacidadConduccion
+
+    CalculadoraElectrica->>CaidaTension: calcularCaida(voltaje, corriente, longitud)
+    CaidaTension-->>CalculadoraElectrica: caidaTension
+
+    CalculadoraElectrica->>Conductor: seleccionarConductor(caidaTension, capacidadConduccion)
+    Conductor-->>CalculadoraElectrica: conductorSeleccionado
+
+    CalculadoraElectrica->>Canalizacion: seleccionarCanalizacion(conductorSeleccionado, capacidadConduccion)
+    Canalizacion-->>CalculadoraElectrica: canalizacionSeleccionada
+
+    CalculadoraElectrica->>Usuario: mostrarInformacionCompleta()
+    Usuario-->>CalculadoraElectrica: confirmar
+    CalculadoraElectrica->>Usuario: generarMemoriaCalculo()

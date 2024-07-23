@@ -1,0 +1,25 @@
+graph TD
+    %% Definición de Componentes
+    subgraph Sistema_Calculadora_Electrica
+        DatosEntradaComponent[Datos de Entrada]
+        CorrienteNominalComponent[Calculo de Corriente Nominal]
+        InterruptorComponent[Seleccion de Interruptor Termomagnetico]
+        ConduccionComponent[Calculo de Capacidad de Conducción]
+        CaidaTensionComponent[Calculo de Caida de Tension]
+        ConductorComponent[Seleccion de Conductor]
+        CanalizacionComponent[Seleccion de Canalización]
+        InterfazUsuarioComponent[Interfaz de Usuario]
+        MemoriaCalculoComponent[Generacion de Memoria de Calculo]
+    end
+
+    %% Definición de Interacciones
+    InterfazUsuarioComponent --> DatosEntradaComponent
+    DatosEntradaComponent --> CorrienteNominalComponent
+    CorrienteNominalComponent --> InterruptorComponent
+    InterruptorComponent --> ConduccionComponent
+    ConduccionComponent --> CaidaTensionComponent
+    CaidaTensionComponent --> ConductorComponent
+    ConductorComponent --> CanalizacionComponent
+    CanalizacionComponent --> InterfazUsuarioComponent
+    InterfazUsuarioComponent --> MemoriaCalculoComponent
+    MemoriaCalculoComponent --> InterfazUsuarioComponent

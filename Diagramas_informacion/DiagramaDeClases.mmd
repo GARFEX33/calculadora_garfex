@@ -1,0 +1,56 @@
+classDiagram
+    %% Clases principales
+    class CalculadoraElectrica {
+        +ingresarDatos()
+        +calcularCorrienteNominal()
+        +seleccionarInterruptorTermomagnetico()
+        +calcularCapacidadConduccion()
+        +calcularCaidaTension()
+        +seleccionarConductor()
+        +seleccionarCanalizacion()
+        +mostrarInformacionCompleta(): String
+        +generarMemoriaCalculo(): String
+    }
+
+    class DatosEntrada {
+        +voltaje: float
+        +corriente: float
+        +fp: float
+        +tipoCircuito: String
+        +temperatura: String
+        +numeroHilos: int
+        +validarDatos(): bool
+    }
+
+    class CorrienteNominal {
+        +calcularMonofasico(voltaje: float, corriente: float): float
+        +calcularBifasico(voltaje: float, corriente: float): float
+        +calcularTrifasico(voltaje: float, corriente: float): float
+    }
+
+    class InterruptorTermomagnetico {
+        +seleccionarInterruptor(corrienteNominal: float, tipoCarga: String): String
+    }
+
+
+    class Conductor {
+        +seleccionarConductor(caidaTension: float, capacidadConduccion: float): String
+    }
+    class SeleccionDeConductor {
+        +seleccionarConductor(): String
+        +seleccionPorCapacidadDeConducción()
+        +seleccionPorCaidaDeTensión()
+    }
+
+    class Canalizacion {
+        +seleccionarCanalizacion(conductor: String, capacidadConduccion: float): String
+    }
+
+    %% Relaciones entre clases
+    CalculadoraElectrica --> DatosEntrada
+    CalculadoraElectrica --> CorrienteNominal
+    CalculadoraElectrica --> InterruptorTermomagnetico
+    CalculadoraElectrica --> Conduccion
+    CalculadoraElectrica --> CaidaTension
+    CalculadoraElectrica --> Conductor
+    CalculadoraElectrica --> Canalizacion
