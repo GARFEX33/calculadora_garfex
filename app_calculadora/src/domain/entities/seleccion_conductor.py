@@ -122,9 +122,9 @@ class SeleccionDeConductor:
         # Si la temperatura no cae en ningún rango, devolver None o un mensaje de error
         return None
 
-    def seleccionar_conductor(self, corriente_por_capacidad_de_conducción, bornes, material, cable_temp, tabla_nom) -> dict:
+    def seleccionar_conductor(self, corriente_por_capacidad_de_conduccion, bornes, material, cable_temp, tabla_nom) -> dict:
        
-        corriente_por_cable = corriente_por_capacidad_de_conducción/bornes
+        corriente_por_cable = corriente_por_capacidad_de_conduccion/bornes
         
         material_col = f"{material.lower()}_{cable_temp[-3:].lower()}"
       
@@ -140,44 +140,51 @@ class SeleccionDeConductor:
         cable_seleccionado = df_filtrado.iloc[0]
         
         return {
-            "numero_de_conductores_por_fase": bornes,
-            "awg": cable_seleccionado["awg"],
-            "mm": cable_seleccionado["mm"],
-            "corriente_maxima": cable_seleccionado[material_col],
-            "temperalura": cable_temp,
-            "tabla_nom": tabla_nom
+            'numero_de_conductores_por_fase': bornes,
+            'awg': cable_seleccionado["awg"],
+            'mm': cable_seleccionado["mm"],
+            'corriente_maxima': cable_seleccionado[material_col],
+            'temperatura': cable_temp,
+            'tabla_nom': tabla_nom
         }
 
     def seleccion_cable_por_tipo_de_canalizacion(self, canalizacion, corriente_calculada, bornes, temperatura_cable) -> dict:
         selector_tabla_de_normas = self.selector_tabla_de_normas( canalizacion = canalizacion, voltaje = self.voltaje , numero_de_hilos = self.numero_de_hilos, bornes = bornes)
         conductor_cobre = self.seleccionar_conductor(
-            corriente_por_capacidad_de_conducción=corriente_calculada, bornes=bornes, material='cobre', cable_temp=temperatura_cable, tabla_nom=selector_tabla_de_normas)
+            corriente_por_capacidad_de_conduccion=corriente_calculada, bornes=bornes, material='cobre', cable_temp=temperatura_cable, tabla_nom=selector_tabla_de_normas)
         conductor_aluminio = self.seleccionar_conductor(
-            corriente_por_capacidad_de_conducción=corriente_calculada, bornes=bornes, material='aluminio', cable_temp=temperatura_cable, tabla_nom=selector_tabla_de_normas)
+            corriente_por_capacidad_de_conduccion=corriente_calculada, bornes=bornes, material='aluminio', cable_temp=temperatura_cable, tabla_nom=selector_tabla_de_normas)
         return{
-                "cobre": conductor_cobre,
-                "aluminio": conductor_aluminio,
-                "corriente_por_capacidad_de_conducción": corriente_calculada,
+                'cobre': conductor_cobre,
+                'aluminio': conductor_aluminio,
+                'corriente_por_capacidad_de_conduccion': corriente_calculada,
             }
     
-    def seleccionar_por_capacidad_conduccion(self, corriente_nominal) -> list[dict]:
-        lista_de_conductores = []
+    def seleccionar_por_capacidad_conduccion(self, corriente_nominal) -> dict:
+        
         temperatura_cable = self.selector_temperatura_conductor(corriente_nominal)
         fa = self.obtener_factor_ajuste_por_agrupamiento(self.numero_de_hilos)
         ft = self.obtener_factor_ajuste_por_temperatura(self.temperatura_seleccionada, temperatura_cable)
         corriente_calculada = corriente_nominal / (fa * ft)
         bornes = self.selector_zapatas_de_interruptor(self.interruptor)
 # TODO: REALIZAR EL CALCULO POR 2 Y UN SOLO CABLE DEPENDE DE LOS BORNES
-        resultados = {}
+        resultados = {
+            "fases": []
+                    }
         for i in range(bornes):
             fase = i + 1
             print("Resultado de i: ", fase, " de ", len(range(bornes)))
-            resultados[f"tuberia_F{fase}"] = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='TUBERIA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable) 
-            resultados[f"charola_F{fase}"] = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='CHAROLA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable)
-            lista_de_conductores.append(resultados)
-
-
-        return lista_de_conductores
+            tuberia = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='TUBERIA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable) 
+            charola = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='CHAROLA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable)
+            fase_info = {
+            "fase": fase,
+            "tuberia": tuberia,
+            "charola": charola
+            }
+            resultados["fases"].append(fase_info)
+        
+        
+        return resultados
 
 
 
