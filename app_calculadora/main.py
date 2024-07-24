@@ -1,3 +1,5 @@
+
+from src.domain.entities.extraer_informacion import extraer_info
 from src.domain.entities.seleccion_conductor import SeleccionDeConductor
 from src.domain.entities.interruptor_termomagnetico import InterruptorTermomagnetico
 from src.domain.entities.corriente_nominal import CorrienteNominal
@@ -10,15 +12,15 @@ def main():
     # Paso 1: Crear una instancia de DatosEntrada con los datos de entrada
     datos_entrada = DatosEntrada(
         voltaje=220, 
-        potencia=1875,
+        potencia=300,
         fp=0.9, 
         tipo_circuito='trifasico', 
         temperatura=29, 
-        numero_hilos=4, 
+        numero_hilos=4,
         tipo_de_voltaje='V', 
-        tipo_de_potencia='W',
+        tipo_de_potencia='KW',
         factor_ajuste_itm = 'general',
-        longitud=30,
+        longitud=20,
         circuito= "manual"
     )
     # Obtén el directorio actual donde se está ejecutando el script
@@ -37,6 +39,11 @@ def main():
             print("Interrutor :",itm["tipo_circuito"],"X",itm["interruptor"],"A")
             # Paso 5: Calcular el conductor
             conductor = SeleccionDeConductor(datos_entrada, file_path,itm["interruptor"]).seleccionar_por_capacidad_conduccion(corriente_nominal)
+            
+            resultados = extraer_info(conductor)
+            for resultado in resultados:
+                print(resultado)
+               
             conductor_caida_tension = SeleccionDeConductor(datos_entrada, file_path,itm["interruptor"]).seleccionar_por_caida_tension(corriente_nominal)
             print(conductor_caida_tension)
             

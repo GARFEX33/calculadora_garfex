@@ -154,36 +154,31 @@ class SeleccionDeConductor:
             "tabla_nom": tabla_nom
         }
 
-    def seleccionar_conductor_por_seccion(self,  seccion ,bornes, material, cable_temp, tabla_nom) -> dict:
+    def seleccionar_conductor_por_seccion(self,  seccion ,bornes) -> dict:
        
         mm_cable = seccion/bornes
-        
-        material_col = f"{material.lower()}_{cable_temp[-3:].lower()}"
-      
         df = self.conductores_df
-      
-            # Filtrar el DataFrame por la tabla de normas
-        df_filtrado = df[df['tabla_nom'] == tabla_nom]
-        print(df_filtrado.head())
+
+        # Filtrar el DataFrame
+        df_filtrado = df[df["mm"] >= mm_cable]
         
+
         if df_filtrado.empty:
+            resultado = None
+        else:
+            # Obtener la fila con el menor valor de "mm" en el DataFrame filtrado
+            resultado = df_filtrado.loc[df_filtrado["mm"].idxmin()]
+
+        if resultado is None:
             return None
-            # Filtrar por el material y la temperatura del cable, y seleccionar el cable con amperaje superior inmediato
-        df_filtrado = df_filtrado[df_filtrado[material_col] >= mm_cable]
-       
-        if df_filtrado.empty:
-            return None
-        cable_seleccionado = df_filtrado.iloc[0]
-        awg = cable_seleccionado["awg"]
-        mm = round(float(cable_seleccionado["mm"]),2)
-       
+        
+        awg = resultado["awg"]
+        mm = round(float(resultado["mm"]),2)
+
         return {
             "numero_de_conductores_por_fase": bornes,
             "awg": awg,
             "mm": mm,
-          
-            "temperatura": cable_temp,
-            "tabla_nom": tabla_nom
         }
 
     def seleccion_cable_por_tipo_de_canalizacion(self, canalizacion, corriente_calculada, bornes, temperatura_cable) -> dict:
@@ -224,10 +219,9 @@ class SeleccionDeConductor:
         return resultados
 
     def seleccionar_por_caida_tension(self, corriente_nominal) -> str:
-        temperatura_cable = self.selector_temperatura_conductor(corriente_nominal)
+        resultados = []
         bornes = self.selector_zapatas_de_interruptor(self.interruptor)
 
-   
         if self.tipo_circuito == 'monofasico':
             return "No se encontró un conductor adecuado por caída de tensión"
         elif self.tipo_circuito == 'bifasico':
@@ -237,7 +231,17 @@ class SeleccionDeConductor:
             longitud = self.datos_entrada.longitud
             voltaje_volts = self.voltaje*1000
             seccion = (2*(math.sqrt(3))*longitud*corriente_nominal)/(voltaje_volts*caida_tension)
-            print("Seccion por caida de tension: ",seccion)
-            cobre = self.seleccionar_conductor_por_seccion(seccion, bornes=bornes, material='cobre', cable_temp="temperatura_cable", tabla_nom='310-60(69)')
-            return "Circuito trifasico"
+            
+        for i in range(bornes):
+            fase = i + 1
+            
+            cable_seleccionado = self.seleccionar_conductor_por_seccion(seccion, bornes=fase)
+            if cable_seleccionado == None:
+                pass
+            else:
+                resultados.append({
+                    "cable_seleccionado": cable_seleccionado,
+                })       
+        return resultados
+
 

@@ -1,0 +1,4 @@
+{'cobre': {'numero_de_conductores_por_fase': 1, 'awg': '14', 'mm': 2.08, 'corriente_maxima': 15.0, 'temperatura': 'temp_60C', 'tabla_nom': '310-15(b)(16)'
+    }, 'aluminio': {'numero_de_conductores_por_fase': 1, 'awg': '6', 'mm': 13.3, 'corriente_maxima': 40.0, 'temperatura': 'temp_60C', 'tabla_nom': '310-15(b)(16)'
+    }, 'corriente_por_capacidad_de_conduccion': 6.83
+}
