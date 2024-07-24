@@ -43,7 +43,6 @@ def main():
             resultados = extraer_info(conductor)
             for resultado in resultados:
                 print(resultado)
-               
             conductor_caida_tension = SeleccionDeConductor(datos_entrada, file_path,itm["interruptor"]).seleccionar_por_caida_tension(corriente_nominal)
             print(conductor_caida_tension)
             

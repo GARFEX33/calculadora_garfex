@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Datos de Entrada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+        .container h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            flex: 0 0 180px;
+            margin-right: 10px;
+            color: #666666;
+            text-align: right;
+        }
+        .form-group input,
+        .form-group select {
+            flex: 1;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.1);
+        }
+        .form-group.full-width {
+            justify-content: center;
+        }
+        .form-group.full-width button {
+            max-width: 200px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Formulario de Datos de Entrada</h1>
+    <form id="datosEntradaForm">
+        <div class="form-group">
+            <label for="voltaje">Voltaje:</label>
+            <input type="number" id="voltaje" name="voltaje" placeholder="Ingrese voltaje en volts" required>
+            <label for="tipo_de_voltaje">Tipo de Voltaje:</label>
+            <select id="tipo_de_voltaje" name="tipo_de_voltaje" required>
+                <option value="V">V</option>
+                <option value="KV">KV</option>
+                <option value="MV">MV</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="potencia">Potencia:</label>
+            <input type="number" id="potencia" name="potencia" placeholder="Ingrese potencia en watts" required>
+            <label for="tipo_de_potencia">Tipo de Potencia:</label>
+            <select id="tipo_de_potencia" name="tipo_de_potencia" required>
+                <option value="W">W</option>
+                <option value="KW">KW</option>
+                <option value="MW">MW</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fp">Factor de Potencia:</label>
+            <input type="number" step="0.01" id="fp" name="fp" placeholder="Ingrese factor de potencia" required>
+            <label for="temperatura">Temperatura:</label>
+            <input type="number" id="temperatura" name="temperatura" placeholder="Ingrese temperatura" required>
+        </div>
+        <div class="form-group">
+            <label for="tipo_circuito">Tipo de Circuito:</label>
+            <select id="tipo_circuito" name="tipo_circuito" required>
+                <option value="monofasico">Monofásico</option>
+                <option value="bifasico">Bifásico</option>
+                <option value="trifasico">Trifásico</option>
+            </select>
+            <label for="numero_hilos">Número de Hilos:</label>
+            <input type="number" id="numero_hilos" name="numero_hilos" placeholder="Ingrese número de hilos" required>
+        </div>
+        <div class="form-group">
+            <label for="factor_ajuste_itm">Factor de Ajuste ITM:</label>
+            <select id="factor_ajuste_itm" name="factor_ajuste_itm" required>
+                <option value="general">General</option>
+                <option value="motor">Motor</option>
+                <option value="aire_acondicionado">Aire Acondicionado</option>
+                <option value="capacitor">Capacitor</option>
+            </select>
+            <label for="circuito">Circuito:</label>
+            <select id="circuito" name="circuito" required>
+                <option value="circuitos_derivados">Circuitos Derivados</option>
+                <option value="circuito_alimentadores_secundario">Circuito Alimentadores Secundario</option>
+                <option value="circuito_alimentadores">Circuito Alimentadores</option>
+                <option value="manual">Manual</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="longitud">Longitud (opcional):</label>
+            <input type="number" id="longitud" name="longitud" placeholder="Ingrese longitud">
+            <label for="corriente">Corriente (opcional):</label>
+            <input type="number" id="corriente" name="corriente" placeholder="Ingrese corriente">
+        </div>
+        <div class="form-group full-width">
+            <button type="submit">Enviar</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
+
+
+
