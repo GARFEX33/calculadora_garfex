@@ -9,21 +9,22 @@ import os
 def main():
     # Paso 1: Crear una instancia de DatosEntrada con los datos de entrada
     datos_entrada = DatosEntrada(
-        voltaje=.220, 
-        potencia=100.0,
+        voltaje=220, 
+        potencia=1875,
         fp=0.9, 
         tipo_circuito='trifasico', 
-        temperatura=32, 
+        temperatura=29, 
         numero_hilos=4, 
-        tipo_de_voltaje='KV', 
-        tipo_de_potencia='KW',
+        tipo_de_voltaje='V', 
+        tipo_de_potencia='W',
         factor_ajuste_itm = 'general',
+        longitud=30,
+        circuito= "manual"
     )
     # Obtén el directorio actual donde se está ejecutando el script
     current_dir = os.path.dirname(__file__)
     # Construye la ruta al archivo usando la ruta relativa
     file_path = os.path.join(current_dir, 'data', 'tabla_cables.csv')
-
 
     try:
         # Paso 2: Validar los datos
@@ -36,11 +37,8 @@ def main():
             print("Interrutor :",itm["tipo_circuito"],"X",itm["interruptor"],"A")
             # Paso 5: Calcular el conductor
             conductor = SeleccionDeConductor(datos_entrada, file_path,itm["interruptor"]).seleccionar_por_capacidad_conduccion(corriente_nominal)
-            print(conductor)
-            
-
-
-
+            conductor_caida_tension = SeleccionDeConductor(datos_entrada, file_path,itm["interruptor"]).seleccionar_por_caida_tension(corriente_nominal)
+            print(conductor_caida_tension)
             
     except ValueError as e:
         print(f"Error en los datos de entrada: {e}")

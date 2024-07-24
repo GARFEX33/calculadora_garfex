@@ -11,7 +11,10 @@ class DatosEntrada:
                  tipo_de_voltaje: Literal['V', 'KV', 'MV'], 
                  tipo_de_potencia: Literal['W', 'KW', 'MW'],
                  factor_ajuste_itm: Literal['general', 'motor', 'aire_acondicionado', 'capacitor'],
+                 circuito: Literal["circuitos_derivados", "circuito_alimentadores_secundario", "circuito_alimentadores", "manual"],
+                 longitud: Optional[float] = 1,
                  corriente: Optional[float] = None):
+
         self.voltaje = voltaje
         self.corriente = corriente
         self.potencia = potencia
@@ -22,6 +25,8 @@ class DatosEntrada:
         self.tipo_de_voltaje = tipo_de_voltaje
         self.tipo_de_potencia = tipo_de_potencia
         self.factor_ajuste_itm = factor_ajuste_itm
+        self.circuito = circuito
+        self.longitud = longitud
 
     def validar_datos(self) -> bool:
         if self.voltaje <= 0:
@@ -74,3 +79,12 @@ class DatosEntrada:
             'trifasico': 3
         }
         return mapeo_tipo_circuito[self.tipo_circuito]
+    
+    def mapeo_circuito(self) -> float:
+        mapeo_circuito = {
+            "circuitos_derivados": 3,
+            "circuito_alimentadores_secundario": 1.5,
+            "circuito_alimentadores": 0.5,
+            "manual": 0.57
+        }
+        return mapeo_circuito[self.circuito]
