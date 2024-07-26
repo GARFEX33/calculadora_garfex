@@ -7,11 +7,14 @@ class InterruptorTermomagnetico:
         self.tipo_circuito = tipo_circuito
 
     def calculo_interruptor(self) -> float:
+        print(f"Corriente nominal: {self.corriente_nominal}")
+        print(f"Factor de ajuste: {self.factor_ajuste_itm}")    
         return self.corriente_nominal * self.factor_ajuste_itm
     
     def seleccionar_interruptor(self) -> dict:
         lista_de_interruptores = [10,15,20,30,40,50,60,70,80,90,100,125,150,200,225,250,300,400,500,600,700,800,1000,1200,1600,2000,2500,3200, 4000, 5000 , 6300]
         corriente_ajustada = self.calculo_interruptor()  
+        print(f"Corriente ajustada: {corriente_ajustada}")
         for interruptor in lista_de_interruptores:
             if interruptor >= corriente_ajustada:
                 return {"interruptor": interruptor,

@@ -33,10 +33,9 @@ def ejecutar_main(voltaje, potencia, fp, tipo_circuito, temperatura, numero_hilo
             resultados["interrutor"] = f"{itm['tipo_circuito']} X {itm['interruptor']}A"
             resultados["corriente_ajustada"] = f"{round(itm['corriente_ajustada'],2)}A"
 
-            conductor = SeleccionDeConductor(datos_entrada, file_path, itm["interruptor"]).seleccionar_por_capacidad_conduccion(corriente_nominal)
-           
+            conductor , iCalculada = SeleccionDeConductor(datos_entrada, file_path, itm["interruptor"]).seleccionar_por_capacidad_conduccion(corriente_nominal)
+            resultados["iCalculada"] = iCalculada
             resultados["capacidad_conduccion"] = conversion_filas_por_conduccion(conductor)
-            
             conductor_caida_tension = SeleccionDeConductor(datos_entrada, file_path, itm["interruptor"]).seleccionar_por_caida_tension(corriente_nominal)
             resultados["caida_tension"] = conversion_filas_por_caida(conductor_caida_tension)
     

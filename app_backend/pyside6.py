@@ -14,6 +14,8 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 800, 800)
 
         main_widget = QWidget()
+
+        
         main_layout = QVBoxLayout(main_widget)
         self.setCentralWidget(main_widget)
 
@@ -106,12 +108,15 @@ class MainWindow(QMainWindow):
         self.corriente_nominal_label = QLabel("Corriente Nominal: ")
         self.correinte_ajustada_label = QLabel("Corriente Ajustada: ")
         self.interrutor_label = QLabel("Interrutor: ")
+        self.icalculada_label = QLabel("Corriente Calculada: ")
         self.interrutor_label.setStyleSheet("font-weight: bold; font-size: 14px;")
         self.corriente_nominal_label.setStyleSheet("font-weight: bold; font-size: 14px;")
         self.correinte_ajustada_label.setStyleSheet("font-weight: bold; font-size: 14px;")
+        self.icalculada_label.setStyleSheet("font-weight: bold; font-size: 14px;")
         main_layout.addWidget(self.corriente_nominal_label)
         main_layout.addWidget(self.correinte_ajustada_label)
         main_layout.addWidget(self.interrutor_label)
+        main_layout.addWidget(self.icalculada_label)
         
 
         self.table_capacidad = QTableWidget(0, 8)
@@ -143,12 +148,15 @@ class MainWindow(QMainWindow):
             resultados = ejecutar_main(voltaje, potencia, fp, tipo_circuito, temperatura, numero_hilos, tipo_voltaje, tipo_potencia, factor_ajuste_itm, longitud, circuito)
 
             self.corriente_nominal_label.setText(resultados["corriente_nominal"])
-            self.correinte_ajustada_label.setText(f"Corriente Ajustada: {resultados['corriente_ajustada']}A")
+            self.correinte_ajustada_label.setText(f"Corriente Ajustada para itm: {resultados['corriente_ajustada']}A")
             self.interrutor_label.setText(f"Interrutor: {resultados['interrutor']}")
+            for i in range(len(resultados["iCalculada"])):
+                fase = i + 1
+                self.icalculada_label.setText(f"Corriente Calculada por F: {fase}-{resultados["iCalculada"][i]}A")
             
 
             self.table_capacidad.setRowCount(0)
-            for res in resultados["capacidad_conduccion"]:
+            for res in resultados["capacidad_conduccion"]:  
                 row_position = self.table_capacidad.rowCount()
                 self.table_capacidad.insertRow(row_position)
                 for col, data in enumerate(res):
