@@ -206,11 +206,21 @@ class SeleccionDeConductor:
         resultados = []
         for i in range(bornes):
             fase = i + 1
-            print("fase :",fase)
             tuberia = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='TUBERIA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable) 
             charola = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='CHAROLA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable)
             if tuberia is None and charola is None:
                 pass
+
+            elif tuberia is None:
+                resultados.append({
+                    "charola": charola
+                })  
+            elif charola is None:
+                resultados.append({
+                    "tuberia": tuberia,
+                   
+                })  
+
             else:
                 resultados.append({
                     "tuberia": tuberia,
@@ -245,3 +255,25 @@ class SeleccionDeConductor:
         return resultados
 
 
+    def seleccionar_por_capacidad_de_itm(self) -> list[dict]:
+        corriente_nominal = self.interruptor 
+        temperatura_cable = self.selector_temperatura_conductor(corriente_nominal)
+        fa = self.obtener_factor_ajuste_por_agrupamiento(self.numero_de_hilos)
+        ft = self.obtener_factor_ajuste_por_temperatura(self.temperatura_seleccionada, temperatura_cable)
+        corriente_calculada = corriente_nominal / (fa * ft)
+        bornes = self.selector_zapatas_de_interruptor(self.interruptor)
+        resultados = []
+        for i in range(bornes):
+            fase = i + 1
+            tuberia = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='TUBERIA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable) 
+            charola = self.seleccion_cable_por_tipo_de_canalizacion(canalizacion='CHAROLA', corriente_calculada=corriente_calculada, bornes=fase, temperatura_cable=temperatura_cable)
+            if tuberia is None and charola is None:
+                pass
+            else:
+                resultados.append({
+                    "tuberia": tuberia,
+                    "charola": charola
+                })       
+        return resultados
+    
+    
