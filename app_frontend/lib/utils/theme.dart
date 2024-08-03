@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// Definición de colores personalizados basados en el logo
 const Color primaryColor = Color(0xFF811210); // Rojo del logo
 const Color secondaryColor = Color(0xFFFDB813); // Amarillo del logo
 const Color backgroundColor = Color(0xFFFFFFFF); // Blanco para el fondo

@@ -3,14 +3,14 @@ class DatosEntrada {
   final double potencia;
   final double fp;
   final String tipoCircuito;
-  final double temperatura;
+  final int temperatura;
   final int numeroHilos;
   final String tipoDeVoltaje;
   final String tipoDePotencia;
   final String factorAjusteItm;
-  final String circuito;
   final double longitud;
-  final double? corriente;
+  final String circuito;
+  double e;
 
   DatosEntrada({
     required this.voltaje,
@@ -22,8 +22,25 @@ class DatosEntrada {
     required this.tipoDeVoltaje,
     required this.tipoDePotencia,
     required this.factorAjusteItm,
+    required this.longitud,
     required this.circuito,
-    this.longitud = 1.0,
-    this.corriente,
-  });
+    double? e,
+  }) : e = e ?? 1.0;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'voltaje': voltaje,
+      'potencia': potencia,
+      'fp': fp,
+      'tipo_circuito': tipoCircuito,
+      'temperatura': temperatura,
+      'numero_hilos': numeroHilos,
+      'tipo_de_voltaje': tipoDeVoltaje,
+      'tipo_de_potencia': tipoDePotencia,
+      'factor_ajuste_itm': factorAjusteItm,
+      'longitud': longitud,
+      'circuito': circuito,
+      'e': e,
+    };
+  }
 }
